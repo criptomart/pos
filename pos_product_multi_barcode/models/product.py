@@ -17,5 +17,8 @@ class ProductProduct(models.Model):
 
     def _compute_barcodes_json(self):
         for product in self:
-            barcodes = [barcode for barcode in product.mapped("barcode_ids.name")]
-            product.barcodes_json = json.dumps(barcodes)
+            if product.active:
+                barcodes = [barcode for barcode in product.mapped("barcode_ids.name")]
+                product.barcodes_json = json.dumps(barcodes)
+            else:
+                product.barcodes_json = "[]"
